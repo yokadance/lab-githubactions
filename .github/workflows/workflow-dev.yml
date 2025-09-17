@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+  repository_dispatch:
+    types:
+      - build-dev
   workflow_dispatch:
 
 concurrency:
@@ -12,60 +15,12 @@ concurrency:
 
 jobs:
   build-dev:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]  # Node LTS estable
-
-    steps:
-      # 1️⃣ Checkout del repositorio
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 5
-
-      # 2️⃣ Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      # 3️⃣ Actualizar NPM (opcional)
-      - name: Update NPM
-        run: npm install -g npm@8
-
-      # 4️⃣ Instalar dependencias
-      - name: Install dependencies
-        run: npm ci
-
-      # 5️⃣ Configurar credenciales AWS
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-
-      # 6️⃣ Verificar scripts y permisos
-      - name: Debug scripts
-        run: ls -l .github/scripts
-
-      - name: Make build.sh executable
-        run: chmod +x .github/scripts/build.sh
-
-      - name: Make deploy.sh executable
-        run: chmod +x .github/scripts/deploy.sh
-
-      # 7️⃣ Ejecutar build.sh
-      - name: Run build.sh
-        run: bash .github/scripts/build.sh
-        env:
-          CI_ENV: dev
-          S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET_DEV }}
-
-      # 8️⃣ Ejecutar deploy.sh
-      - name: Run deploy.sh
-        run: bash .github/scripts/deploy.sh
-        env:
-          S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET_DEV }}
+    uses: yokadance/lab-githubactions/.github/workflows/deploy-to-s3.yml@develop
+    with:
+      CI_ENV: dev
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN}}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET_DEV }}
