@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]  # Node LTS, más estable que 23.x
+        node-version: [20.x]  # Node LTS estable
 
     steps:
-      # 1️⃣ Checkout repo
+      # 1️⃣ Checkout del repositorio
       - uses: actions/checkout@v2
         with:
           fetch-depth: 5
 
-      # 2️⃣ Setup Node
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,19 +34,11 @@ jobs:
       - name: Update NPM
         run: npm install -g npm@8
 
-      # 4️⃣ Limpiar scripts prepare si es necesario
-      - name: Clear Prepare Script
-        run: npm set-script prepare ""
-
-      # 5️⃣ Instalar dependencias
+      # 4️⃣ Instalar dependencias
       - name: Install dependencies
         run: npm ci
 
-      # 6️⃣ Generar carpeta dist
-      - name: Build Static Website
-        run: npm run build
-
-      # 7️⃣ Configurar credenciales AWS
+      # 5️⃣ Configurar credenciales AWS
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -55,21 +47,24 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      # 8️⃣ Verificar scripts y permisos
+      # 6️⃣ Verificar scripts y permisos
       - name: Debug scripts
         run: ls -l .github/scripts
 
       - name: Make build.sh executable
         run: chmod +x .github/scripts/build.sh
 
-      # 9️⃣ Ejecutar build.sh
+      - name: Make deploy.sh executable
+        run: chmod +x .github/scripts/deploy.sh
+
+      # 7️⃣ Ejecutar build.sh
       - name: Run build.sh
         run: bash .github/scripts/build.sh
         env:
           CI_ENV: dev
           S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET_DEV }}
 
-      # 🔟 Ejecutar deploy.sh
+      # 8️⃣ Ejecutar deploy.sh
       - name: Run deploy.sh
         run: bash .github/scripts/deploy.sh
         env:
