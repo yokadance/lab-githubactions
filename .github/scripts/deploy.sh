@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/bin/bash
 
 # Me ubico en la carpeta donde se genera el sitio
 cd dist
