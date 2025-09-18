@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps CI/CD Lab - Cat GIFs</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CI/CD Cat lab</h1>
+            <div class="environment-badge" id="env-badge">Ambiente: Desconocido</div>
+            <p>Un ejemplo de sitio web estático para prácticas</p>
+        </header>
+        
+        <main>
+            <h2>¡Bienvenido a nuestro laboratorio de CICD</h2>
+            <p>La página detecta automáticamente el ambiente y adapta su estilo y contenido.</p>
+            
+            <div class="environment-info">
+                <h3>Información del Ambiente:</h3>
+                <p><strong>Nombre del Ambiente:</strong> <span id="env-name">Cargando...</span></p>
+                <p><strong>Hora del Último Despliegue:</strong> <span id="deploy-time">Cargando...</span></p>
+            </div>
+            
+            <h3>¡Disfruta de algunos gifs de gatos!</h3>
+            <div class="cat-gallery" id="cat-gallery">
+                <!-- Los gifs de gatos se cargan por JavaScript -->
+            </div>
+        </main>
+        
+        <footer>
+            <p>Laboratorio de DevOps CI/CD - Creado para fines educativos</p>
+        </footer>
+    </div>
+    
+    <script src="./js/environment.js" type="module"></script>
+    <script src="./js/main.js" type="module"></script>
+</body>
+</html>

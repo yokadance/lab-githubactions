@@ -1,0 +1,26 @@
+{
+    "name": "cat-cicd-lab",
+    "version": "1.0.0",
+    "description": "Website for CI/CD lab with different environments",
+    "main": "index.js",
+    "scripts": {
+      "dev": "vite",
+      "build:static": "vite build",
+      "build:dev": "cross-env NODE_ENV=development vite build",
+      "build:staging": "cross-env NODE_ENV=staging vite build",
+      "build:prod": "cross-env NODE_ENV=production vite build",
+      "preview": "vite preview"
+    },
+    "keywords": [
+      "cicd",
+      "devops",
+      "static-site"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+      "cross-env": "^7.0.3",
+      "vite": "^4.4.5"
+    },
+    "dependencies": {}
+  }
