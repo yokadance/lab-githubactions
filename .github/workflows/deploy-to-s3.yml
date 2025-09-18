@@ -50,8 +50,8 @@ jobs:
         run: ./.github/scripts/build.sh
         shell: bash
         env:
-          CI_ENV: ${{ inputs.CI_ENV }}
-          S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET }}
+          CI_ENV: ${{inputs.CI_ENV}}
+          S3_ORIGIN_BUCKET: ${{secrets.S3_ORIGIN_BUCKET}}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -65,4 +65,4 @@ jobs:
         run: ./.github/scripts/deploy.sh
         shell: bash
         env:
-          S3_ORIGIN_BUCKET: ${{ secrets.S3_ORIGIN_BUCKET }}
+          S3_ORIGIN_BUCKET: ${{secrets.S3_ORIGIN_BUCKET}}
